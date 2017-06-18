@@ -4,36 +4,30 @@ from Tkinter import *
 
 def curve(hp, dmg, ddg):
     results = []
-    # Rounds needed to hit
+    numbers = []
     rounds = ceil(hp / dmg)
-    # Chance of hit
     chance = 1 - ddg
-    i = rounds
+    x = rounds
     n = 0
+    results.append(0)
+    numbers.append(x - 1)
     while True:
         o = n
-        n = value(i, rounds, chance, ddg)
+        hits = rounds - 1
+        misses = x - rounds
+        n = ddg ** misses * chance ** rounds * ncr(hits + misses, hits)
         results.append(n)
-        i += 1
-        # Stop if really small or i goes too big
-        if (o - n > 0 and n < 0.0001) or i > 100 + rounds:
+        numbers.append(x)
+        x += 1
+        if (o - n > 0 and n < 0.0001) or x > 100 + rounds:
             break
-    rangg = range_(results, 0.9)
-    return results
-
-
-def value(x, rounds, chance, ddg):
-    # Hits needed before final hit
-    hits = rounds - 1
-    # Misses needed before final hit
-    misses = x - rounds
-    return ddg ** misses * chance ** rounds * ncr(hits + misses, hits)
+    return [results, numbers]
 
 
 def ncr(n, r):
     return factorial(n) / (factorial(r) * factorial(n - r))
 
-
+'''
 def range_(array, limit):
     start = array.index(max(array))
     d = 0
@@ -44,19 +38,32 @@ def range_(array, limit):
         if d * 2 > len(array):
             break
             # Throws error
+'''
 
-data = curve(20.0, 1.0, 0.15)
-stretch = [x * 100 for x in data]
+data = curve(300.0, 10.0, 0.5)
+stretch = [x * 100 for x in data[0]]
+print stretch
+
+print data[1]
 
 tk = Tk()
 
-canvas = Canvas(master=tk, width=1000, height=1000)
+width = len(stretch) * 10 + 30
+height = max(stretch) * 10 + 30
+canvas = Canvas(master=tk, width=width, height=height)
 canvas.pack()
-canvas.create_line(100, 100, 100, 101, fill="red")
 
-for i in range(len(stretch)):
+for i in range(0, 101, 5):
+    if height - i * 10 - 20 < 10:
+        break
+    canvas.create_text(width - 20, height - i * 10 - 20, text=i)
+    canvas.create_line(10, height - i * 10 - 20, width - 30, height - i * 10 - 20, fill="#ccc")
+for i in range(len(data[1]))[0::5]:
+    canvas.create_text(i * 10 + 10, height - 10, text=str(int(data[1][i])))
+    canvas.create_line(i * 10 + 10, 10, i * 10 + 10, height - 20, fill="#ccc")
+for i in range(len(stretch) - 1):
     datum = stretch[i]
-    print datum
-    canvas.create_line(i * 10, datum * 10 - 1, i * 10, datum * 10 + 1, fill="red")
+    later = stretch[i + 1]
+    canvas.create_line(i * 10 + 10, height - datum * 10 - 20, i * 10 + 20, height - later * 10 - 20, fill="#90c", width=3)
 
 mainloop()
