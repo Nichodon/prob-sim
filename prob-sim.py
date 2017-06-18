@@ -43,7 +43,7 @@ def range_(array, limit):
 
 colors = ['#09c', '#90c']
 # p1hp, p2dm p1dd
-data = [curve(300.0, 19.0, 0.7), curve(300.0, 30.0, 0.2)]
+data = [curve(300.0, 300.0, 0.2), curve(300.0, 100.0, 0.9)]
 minimum = min(min(data[0][1]), min(data[1][1]))
 maximum = max(max(data[0][1]), max(data[1][1]))
 tk = Tk()
@@ -53,7 +53,6 @@ height = max(max(data[0][0]), max(data[1][0])) * 1000
 canvas = Canvas(master=tk, width=width + 30, height=height + 30)
 canvas.pack()
 # Horizontal
-print '              ' + str(minimum)
 for i in range(0, int(height / 10), 5):
     canvas.create_text(width + 20, height - i * 10 + 10, text=i)
     canvas.create_line(10, height - i * 10 + 10, width + 10, height - i * 10 + 10, fill="#ccc")
@@ -70,35 +69,34 @@ for i in range(len(data)):
 
 final = []
 
-n = 0
 r = 0
-for i in range(len(data[0][0])):
-    n += data[0][0][i]
-    index = i + data[0][1][0] - data[1][1][0]
-    r += n * (0 if index < 0 or index >= len(data[1][1]) else data[1][0][int(index)])
-
-final.append(r)
-
-n = 0
-r = 0
-for i in range(len(data[1][0])):
-    n += data[1][0][i]
-    index = i + data[1][1][0] - data[0][1][0]
-    r += n * (0 if index < 0 or index >= len(data[0][1]) else data[0][0][int(index)])
-
-final.append(r)
-
-r = 0
-pprint(data[0][1])
-pprint(data[1][1])
-for i in range(int(min(data[0][1][0], data[1][1][0])), int(min(data[0][1][0], data[1][1][0]) + 1)):
+for i in range(int(min(data[0][1][0], data[1][1][0])), int(min(data[0][1][-1], data[1][1][-1]) + 1)):
     x = i - data[0][1][0]
     y = i - data[1][1][0]
-    print x, '', y
     r += (0 if x < 0 else data[0][0][int(x)]) * (0 if y < 0 else data[1][0][int(y)])
 
 final.append(r)
 
-print sum(final)
+r = 0
+n = 0
+for i in range(int(min(data[0][1][0], data[1][1][0])), int(min(data[0][1][-1], data[1][1][-1]) + 1)):
+    x = i - data[0][1][0]
+    y = i - data[1][1][0]
+    n += 0 if x < 0 else data[0][0][int(x)]
+    r += n * (0 if y < 0 else data[1][0][int(y)])
+
+final.append(r)
+
+r = 0
+n = 0
+for i in range(int(min(data[0][1][0], data[1][1][0])), int(min(data[0][1][-1], data[1][1][-1]) + 1)):
+    x = i - data[0][1][0]
+    y = i - data[1][1][0]
+    n += 0 if y < 0 else data[1][0][int(y)]
+    r += n * (0 if x < 0 else data[0][0][int(x)])
+
+final.append(r)
+
+print final
 
 mainloop()
