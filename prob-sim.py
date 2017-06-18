@@ -42,7 +42,7 @@ def range_(array, limit):
 
 colors = ['#09c', '#90c']
 # p1hp, p2dm p1dd
-data = [curve(300.0, 50.0, 0.5), curve(300.0, 40.0, 0.4)]
+data = [curve(300.0, 50.0, 0.5), curve(300.0, 50.0, 0.5)]
 minimum = min(min(data[0][1]), min(data[1][1]))
 maximum = max(max(data[0][1]), max(data[1][1]))
 
@@ -103,9 +103,9 @@ for i in range(int(min(data[0][1][0], data[1][1][0])), int(max(data[0][1][-1], d
 final.append(r)
 
 print final
-print sum(final)
+final = [x * 1 / sum(final) for x in final]
 
-lf2 = LabelFrame(master=tk, text="Results")
+lf2 = LabelFrame(master=tk, text="Approximate Results")
 lf2.grid(row=0, column=2, padx=20, pady=10, sticky=NS)
 l1 = Label(master=lf2, text="Blue win chance: " + str(final[2] * 100) + '%')
 l1.grid(row=0, column=0, padx=20, pady=10, sticky=W)
@@ -113,7 +113,14 @@ l2 = Label(master=lf2, text="Purple win chance: " + str(final[1] * 100) + '%')
 l2.grid(row=1, column=0, padx=20, pady=10, sticky=W)
 l3 = Label(master=lf2, text="Tie chance: " + str(final[0] * 100) + '%')
 l3.grid(row=2, column=0, padx=20, pady=10, sticky=W)
-l4 = Label(master=lf2, text="Sum of chances: " + str(sum(final) * 100) + '%')
-l4.grid(row=3, column=0, padx=20, pady=10, sticky=W)
-
+'''
+lf3 = LabelFrame(master=tk, text="Approximate Results")
+lf2.grid(row=0, column=2, padx=20, pady=10, sticky=NS)
+l1 = Label(master=lf2, text="Blue win chance: " + str(final[2] * 100) + '%')
+l1.grid(row=0, column=0, padx=20, pady=10, sticky=W)
+l2 = Label(master=lf2, text="Purple win chance: " + str(final[1] * 100) + '%')
+l2.grid(row=1, column=0, padx=20, pady=10, sticky=W)
+l3 = Label(master=lf2, text="Tie chance: " + str(final[0] * 100) + '%')
+l3.grid(row=2, column=0, padx=20, pady=10, sticky=W)
+'''
 mainloop()
