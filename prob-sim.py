@@ -1,5 +1,6 @@
 from math import *
 from Tkinter import *
+from pprint import *
 
 
 def curve(hp, dmg, ddg):
@@ -40,30 +41,64 @@ def range_(array, limit):
             # Throws error
 '''
 
-data = curve(300.0, 10.0, 0.5)
-stretch = [x * 100 for x in data[0]]
-print stretch
-
-print data[1]
-
+colors = ['#09c', '#90c']
+# p1hp, p2dm p1dd
+data = [curve(300.0, 19.0, 0.7), curve(300.0, 30.0, 0.2)]
+minimum = min(min(data[0][1]), min(data[1][1]))
+maximum = max(max(data[0][1]), max(data[1][1]))
 tk = Tk()
-
-width = len(stretch) * 10 + 30
-height = max(stretch) * 10 + 30
-canvas = Canvas(master=tk, width=width, height=height)
+tk.wm_title('probsim')
+width = (maximum - minimum) * 10
+height = max(max(data[0][0]), max(data[1][0])) * 1000
+canvas = Canvas(master=tk, width=width + 30, height=height + 30)
 canvas.pack()
+# Horizontal
+print '              ' + str(minimum)
+for i in range(0, int(height / 10), 5):
+    canvas.create_text(width + 20, height - i * 10 + 10, text=i)
+    canvas.create_line(10, height - i * 10 + 10, width + 10, height - i * 10 + 10, fill="#ccc")
+for i in range(int(minimum), int(maximum), 5):
+    canvas.create_text(i * 10 - minimum * 10 + 10, height + 20, text=i)
+    canvas.create_line(i * 10 - minimum * 10 + 10, 10, i * 10 - minimum * 10 + 10, height + 10, fill="#ccc")
+for i in range(len(data)):
+    for j in range(len(data[i][0]) - 1):
+        x1 = data[i][1][j] * 10 - minimum * 10 + 10
+        y1 = height - data[i][0][j] * 1000 + 10
+        x2 = data[i][1][j + 1] * 10 - minimum * 10 + 10
+        y2 = height - data[i][0][j + 1] * 1000 + 10
+        canvas.create_line(x1, y1, x2, y2, width=3, fill=colors[i])
 
-for i in range(0, 101, 5):
-    if height - i * 10 - 20 < 10:
-        break
-    canvas.create_text(width - 20, height - i * 10 - 20, text=i)
-    canvas.create_line(10, height - i * 10 - 20, width - 30, height - i * 10 - 20, fill="#ccc")
-for i in range(len(data[1]))[0::5]:
-    canvas.create_text(i * 10 + 10, height - 10, text=str(int(data[1][i])))
-    canvas.create_line(i * 10 + 10, 10, i * 10 + 10, height - 20, fill="#ccc")
-for i in range(len(stretch) - 1):
-    datum = stretch[i]
-    later = stretch[i + 1]
-    canvas.create_line(i * 10 + 10, height - datum * 10 - 20, i * 10 + 20, height - later * 10 - 20, fill="#90c", width=3)
+final = []
+
+n = 0
+r = 0
+for i in range(len(data[0][0])):
+    n += data[0][0][i]
+    index = i + data[0][1][0] - data[1][1][0]
+    r += n * (0 if index < 0 or index >= len(data[1][1]) else data[1][0][int(index)])
+
+final.append(r)
+
+n = 0
+r = 0
+for i in range(len(data[1][0])):
+    n += data[1][0][i]
+    index = i + data[1][1][0] - data[0][1][0]
+    r += n * (0 if index < 0 or index >= len(data[0][1]) else data[0][0][int(index)])
+
+final.append(r)
+
+r = 0
+pprint(data[0][1])
+pprint(data[1][1])
+for i in range(int(min(data[0][1][0], data[1][1][0])), int(min(data[0][1][0], data[1][1][0]) + 1)):
+    x = i - data[0][1][0]
+    y = i - data[1][1][0]
+    print x, '', y
+    r += (0 if x < 0 else data[0][0][int(x)]) * (0 if y < 0 else data[1][0][int(y)])
+
+final.append(r)
+
+print sum(final)
 
 mainloop()
