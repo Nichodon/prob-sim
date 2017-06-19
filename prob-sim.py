@@ -8,7 +8,7 @@ import ttk
 tk = Tk()
 tk.wm_title('probsim')
 
-inputs = [2.0, 1.0, 0.5, 4.0, 1.0, 0.25]
+inputs = [500, 100, 0.5, 300, 200, 0.7]
 
 
 def curve(hp, dmg, ddg):
@@ -94,7 +94,6 @@ def update():
     lf1.grid(row=0, column=1, pady=10, sticky=NS)
     canvas = Canvas(master=lf1, width=width + 30, height=height + 30)
     canvas.pack(padx=10, pady=10, expand=True)
-    colors = ['#09c', '#90c']
 
     # Horizontal
     for i in range(0, int(height / 10), 5):
@@ -156,7 +155,7 @@ def update():
     graph = Canvas(master=lf3, width=190, height=stretch)
     graph.pack(padx=20, pady=10, expand=True)
     for i in range(11):
-        graph.create_line(0, i * (stretch - 40) / 10 + 40, 180, i * (stretch - 40) / 10 + 40, fill="#ccc")
+        graph.create_line(0, i * (stretch - 40) / 10 + 40, 190, i * (stretch - 40) / 10 + 40, fill="#ccc")
     graph.create_rectangle(10, stretch - (stretch - 40) * final[2], 60, stretch, fill=colors[0], outline='')
     graph.create_text(35, 20, text="Blue\n" + str(round(final[2] * 100, 2)) + '%')
     graph.create_rectangle(70, stretch - (stretch - 40) * final[1], 120, stretch, fill=colors[1], outline='')
@@ -164,49 +163,49 @@ def update():
     graph.create_rectangle(130, stretch - (stretch - 40) * final[0], 180, stretch, fill='#999', outline='')
     graph.create_text(155, 20, text="Tie\n" + str(round(final[0] * 100, 2)) + '%')
 
-
+colors = ['#09c', '#90c']
 command = tk.register(validate), '%d', '%P', '%S'
 
 lf2 = LabelFrame(master=tk, text="Customization")
 lf2.grid(row=0, column=0, padx=10, pady=10, sticky=NS)
 f1 = Frame(master=lf2)
 f1.pack(expand=True)
-l7 = Label(master=f1, text="Blue")
-l7.grid(row=0, column=0, sticky=W, padx=10, pady=10)
 s1 = ttk.Separator(master=f1)
 s1.grid(row=4, column=0, columnspan=2, sticky=EW, padx=10)
 s2 = ttk.Separator(master=f1)
 s2.grid(row=9, column=0, columnspan=2, sticky=EW, padx=10)
-l8 = Label(master=f1, text="Purple")
-l8.grid(row=5, column=0, sticky=W, padx=10, pady=10)
 b1 = Button(master=f1, text="Update", command=update, padx=10, pady=5, relief=GROOVE)
 b1.grid(row=10, column=0, sticky=W, padx=10, pady=10)
 
-e1 = Entry(master=f1, vcmd=command, validate="key", highlightbackground='#ccc', highlightthickness=1, bd=0)
+e1 = Entry(master=f1, vcmd=command, highlightbackground='#ccc', highlightthickness=1, bd=0)
 e1.grid(row=1, column=1, padx=10, pady=10)
-e2 = Entry(master=f1, vcmd=command, validate="key", highlightbackground='#ccc', highlightthickness=1, bd=0)
+e2 = Entry(master=f1, vcmd=command, highlightbackground='#ccc', highlightthickness=1, bd=0)
 e2.grid(row=2, column=1, padx=10, pady=10)
-e3 = Entry(master=f1, vcmd=command, validate="key", highlightbackground='#ccc', highlightthickness=1, bd=0)
+e3 = Entry(master=f1, vcmd=command, highlightbackground='#ccc', highlightthickness=1, bd=0)
 e3.grid(row=3, column=1, padx=10, pady=10)
-l1 = Label(master=f1, text="Health Points")
+l1 = Label(master=f1, text="Health Points", foreground=colors[0])
 l1.grid(row=1, column=0, padx=10, pady=10, sticky=W)
-l2 = Label(master=f1, text="Attack Damage")
+l2 = Label(master=f1, text="Attack Damage", foreground=colors[0])
 l2.grid(row=2, column=0, padx=10, pady=10, sticky=W)
-l3 = Label(master=f1, text="Dodge Percent")
+l3 = Label(master=f1, text="Dodge Percent", foreground=colors[0])
 l3.grid(row=3, column=0, padx=10, pady=10, sticky=W)
 
-e4 = Entry(master=f1, vcmd=command, validate="key", highlightbackground='#ccc', highlightthickness=1, bd=0)
+e4 = Entry(master=f1, vcmd=command, highlightbackground='#ccc', highlightthickness=1, bd=0)
 e4.grid(row=6, column=1, padx=10, pady=10)
-e5 = Entry(master=f1, vcmd=command, validate="key", highlightbackground='#ccc', highlightthickness=1, bd=0)
+e5 = Entry(master=f1, vcmd=command, highlightbackground='#ccc', highlightthickness=1, bd=0)
 e5.grid(row=7, column=1, padx=10, pady=10)
-e6 = Entry(master=f1, vcmd=command, validate="key", highlightbackground='#ccc', highlightthickness=1, bd=0)
+e6 = Entry(master=f1, vcmd=command, highlightbackground='#ccc', highlightthickness=1, bd=0)
 e6.grid(row=8, column=1, padx=10, pady=10)
-l4 = Label(master=f1, text="Health Points")
+l4 = Label(master=f1, text="Health Points", foreground=colors[1])
 l4.grid(row=6, column=0, padx=10, pady=10, sticky=W)
-l5 = Label(master=f1, text="Attack Damage")
+l5 = Label(master=f1, text="Attack Damage", foreground=colors[1])
 l5.grid(row=7, column=0, padx=10, pady=10, sticky=W)
-l6 = Label(master=f1, text="Dodge Percent")
+l6 = Label(master=f1, text="Dodge Percent", foreground=colors[1])
 l6.grid(row=8, column=0, padx=10, pady=10, sticky=W)
+
+for entry in [e1, e2, e3, e4, e5, e6]:
+    entry.insert(END, inputs[[e1, e2, e3, e4, e5, e6].index(entry)])
+    entry.config(validate='key')
 
 update()
 mainloop()
