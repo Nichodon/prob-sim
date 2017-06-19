@@ -51,16 +51,20 @@ def validate(action, value_if_allowed, text):
 
 def update():
     global inputs, canvas, graph, lf1, lf3
+
+    try:
+        inputs = [float(x.get()) for x in [e1, e2, e3, e4, e5, e6]]
+        if inputs[2] > 1 or inputs[5] > 1:
+            return
+    except ValueError:
+        pass
+
     try:
         canvas.pack_forget()
         graph.pack_forget()
         lf1.grid_forget()
         lf3.grid_forget()
     except NameError:
-        pass
-    try:
-        inputs = [float(x.get()) for x in [e1, e2, e3, e4, e5, e6]]
-    except ValueError:
         pass
 
     '''
@@ -79,6 +83,7 @@ def update():
         data = [curve(inputs[0], inputs[4], inputs[2]), curve(inputs[3], inputs[1], inputs[5])]
     except ValueError:
         return
+
     minimum = min(min(data[0][1]), min(data[1][1]))
     maximum = max(max(data[0][1]), max(data[1][1]))
 
@@ -146,7 +151,7 @@ def update():
     tk.update_idletasks()
 
     stretch = max(canvas.winfo_height(), 350)
-    lf3 = LabelFrame(master=tk, text="Approximate Results")
+    lf3 = LabelFrame(master=tk, text="Approximate Chance of Win")
     lf3.grid(row=0, column=2, padx=10, pady=10, sticky=NS)
     graph = Canvas(master=lf3, width=190, height=stretch)
     graph.pack(padx=20, pady=10, expand=True)
@@ -162,7 +167,7 @@ def update():
 
 command = tk.register(validate), '%d', '%P', '%S'
 
-lf2 = LabelFrame(master=tk, text="Stats")
+lf2 = LabelFrame(master=tk, text="Customization")
 lf2.grid(row=0, column=0, padx=10, pady=10, sticky=NS)
 f1 = Frame(master=lf2)
 f1.pack(expand=True)
